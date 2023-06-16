@@ -4,6 +4,8 @@ const c = canvas.getContext('2d');
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
+function init(){
+
 const gravity = 0.5
 class Player {
     constructor() {
@@ -27,11 +29,11 @@ class Player {
 
         if (this.position.y + this.height + this.velocity.y <= canvas.height)
             this.velocity.y += gravity
-        else this.velocity.y = 0
+        //else this.velocity.y = 0
     }
 
     draw() {
-        c.fillStyle = 'seagreen'
+        c.fillStyle = 'white'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 
@@ -44,13 +46,13 @@ class Platform {
         y: y,
     }
     this.width = 500
-    this.height = 20
+    this.height = 50
 }
 
 
 
     draw(){
-        c.fillStyle = '#9370DB'
+        c.fillStyle = 'lightblue'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 
@@ -58,7 +60,7 @@ class Platform {
 //Platform Placement
 const player = new Player()
 const platforms = [new Platform({
-    x: 1, y: 750
+    x: 0, y: 750
 }), new Platform( {
     x: 500, y: 750
 }) ]
@@ -84,7 +86,8 @@ function animate() {
 
     if ( keys.right.pressed && player.position.x < 400) {
         player.velocity.x = 7
-    } else if ( keys.left.pressed && player.position.x > 100){
+    } else if (( keys.left.pressed && player.position.x > 100) ||
+    (keys.left.pressed && scrollOffset === 0 && player.position.x > 0)){
         player.velocity.x = -7
     }
     else { player.velocity.x = 0
@@ -95,7 +98,7 @@ function animate() {
                 platform.position.x -= 7
             })
         
-        } else if (keys.left.pressed){
+        } else if (keys.left.pressed && scrollOffset > 0){
             scrollOffset -=7
             platforms.forEach(platform =>{
                 platform.position.x += 7
@@ -112,8 +115,15 @@ function animate() {
     }
 })
 
+}
+ //win condition
     if ( scrollOffset > 2000) {
         alert ('You win!')
+    }
+
+//lose condition
+    if ( player.position.y > canvas.height) {
+        init()
     }
 }
 animate()
