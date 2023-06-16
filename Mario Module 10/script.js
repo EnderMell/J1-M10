@@ -36,16 +36,18 @@ class Player {
     }
 
 }
-
+//PLatform Properties
 class Platform { 
     constructor({x, y}) {
     this.position ={
         x: x,
         y: y,
     }
-    this.width = 200
+    this.width = 500
     this.height = 20
 }
+
+
 
     draw(){
         c.fillStyle = '#9370DB'
@@ -53,12 +55,12 @@ class Platform {
     }
 
 }
-
+//Platform Placement
 const player = new Player()
 const platforms = [new Platform({
-    x: 200, y: 100
+    x: 1, y: 750
 }), new Platform( {
-    x: 500, y: 200
+    x: 500, y: 750
 }) ]
 const keys = {
     right:{ 
