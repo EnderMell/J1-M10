@@ -1,6 +1,7 @@
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
+
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
@@ -8,10 +9,13 @@ canvas.height = window.innerHeight
 
 const gravity = 0.5
 class Player {
-    constructor() {
+    constructor({ x, y }) {
+
+        this.startPosition = { x, y }
+
         this.position = {
-            x: 100,
-            y: 100
+            x: x,
+            y: y
         }
         this.velocity = {
             x: 0,
@@ -40,14 +44,17 @@ class Player {
 }
 //PLatform Properties
 class Platform {
-    constructor({ x, y }) {
+    constructor({ x, y, width, height }) {
+
+        this.startPosition = { x, y }
+
         this.position = {
             x: x,
             y: y,
         }
         
-        this.width = 500
-        this.height = 50
+        this.width = width;
+        this.height = height;
     }
 
 
@@ -60,9 +67,10 @@ class Platform {
 
 }
 //Platform Placement
-const player = new Player()
+const player = new Player( {x: 100, y:100} )
 const platforms = [new Platform({
     x: 0, y: 750,
+    width: 700, height: 50
 }), new Platform({
     x: 500, y: 750
 })
@@ -127,14 +135,30 @@ function animate() {
         alert('You win!')
     }
 
+    c.font = '30px Arial';
+
     //lose condition
     if (player.position.y > canvas.height) {
-        player.position.x = 100;
-        player.position.y = 100;
-
+        gameOver()
         }
+        //c.font = '30px Arial';
+        c.fillText(`Player: { x: ${ player.position.x}, y: ${ player.position.y}}` , 10, 50)
+        c.fillText(`Platforms: { x: ${ platforms[0].position.x},  y: ${ platforms[0].position.y}}` , 10, 80)
 }
 animate()
+
+function gameOver () {
+        player.position = player.startPosition
+        for ( let i=0; i<platforms.length; i++)
+        {
+            platforms[i].position = platforms[i].startPosition;
+        }
+
+        //platforms.position = this.startPosition;
+        // console.log('You died, try again')
+        // c.fillText(`You died, try again`, 200,200)
+        console.log('gameover')
+}
 
 // Controls
 
