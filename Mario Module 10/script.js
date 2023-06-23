@@ -1,5 +1,6 @@
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
+let isDood = false;
 
 
 canvas.width = window.innerWidth
@@ -47,6 +48,7 @@ class Platform {
     constructor({ x, y, width, height }) {
 
         this.startPosition = { x, y }
+        console.log(this.startPosition)
 
         this.position = {
             x: x,
@@ -70,7 +72,7 @@ class Platform {
 const player = new Player( {x: 100, y:100} )
 const platforms = [new Platform({
     x: 0, y: 750,
-    width: 700, height: 50
+    width: 1500, height: 50
 }), new Platform({
     x: 500, y: 750
 })
@@ -139,25 +141,32 @@ function animate() {
 
     //lose condition
     if (player.position.y > canvas.height) {
+        isDood = true
+        console.log(this.startPosition)
+
         gameOver()
+
         }
         //c.font = '30px Arial';
         c.fillText(`Player: { x: ${ player.position.x}, y: ${ player.position.y}}` , 10, 50)
         c.fillText(`Platforms: { x: ${ platforms[0].position.x},  y: ${ platforms[0].position.y}}` , 10, 80)
+        c.fillText(scrollOffset, 10, 110)
 }
 animate()
 
 function gameOver () {
-        player.position = player.startPosition
+        if(isDood){
+        player.position.x = 100;
+        player.position.y = 100;
         for ( let i=0; i<platforms.length; i++)
         {
             platforms[i].position = platforms[i].startPosition;
         }
-
-        //platforms.position = this.startPosition;
-        // console.log('You died, try again')
-        // c.fillText(`You died, try again`, 200,200)
-        console.log('gameover')
+        scrollOffset = 0;
+        console.log('game over')
+        console.log(this.startPosition)
+        isDood = false;
+    }
 }
 
 // Controls
@@ -191,7 +200,10 @@ window.addEventListener('keyup', ({ keyCode }) => {
             console.log('right')
             keys.right.pressed = false
             break;
-
+        // case 87:
+        //     console.log('up')
+        //     player.velocity.y -= 0
+        //     break;
     }
     console.log(keys.right.pressed)
 })
