@@ -74,7 +74,8 @@ const platforms = [new Platform({
     x: 0, y: 750,
     width: 1500, height: 50
 }), new Platform({
-    x: 500, y: 750
+     x: 1200, y: 450,
+     width: 1500, height: 50
 })
 
 ]
@@ -133,40 +134,40 @@ function animate() {
 
 
     //win condition
-    if (scrollOffset > 2000) {
-        alert('You win!')
+    if (scrollOffset > 4000) {
+        c.fillText('You Win!',700, 400)
     }
 
     c.font = '30px Arial';
 
+    
+
+    
+        
+//c.font = '30px Arial';
+    c.fillText(`Player: { x: ${ player.position.x}, y: ${ player.position.y}}` , 10, 50)
+    c.fillText(`Platforms: { x: ${ platforms[0].position.x},  y: ${ platforms[0].position.y}}` , 10, 80)
+    c.fillText(scrollOffset, 10, 110)
+
     //lose condition
-    if (player.position.y > canvas.height) {
-        isDood = true
-        console.log(this.startPosition)
-
-        gameOver()
-
+    if(!isDood) {
+        if (player.position.y > canvas.height) {
+            console.log('game over')
+            gameOver()
         }
-        //c.font = '30px Arial';
-        c.fillText(`Player: { x: ${ player.position.x}, y: ${ player.position.y}}` , 10, 50)
-        c.fillText(`Platforms: { x: ${ platforms[0].position.x},  y: ${ platforms[0].position.y}}` , 10, 80)
-        c.fillText(scrollOffset, 10, 110)
+    }
 }
 animate()
 
 function gameOver () {
-        if(isDood){
-        player.position.x = 100;
-        player.position.y = 100;
+        isDood = true;
+        player.position = player.startPosition
         for ( let i=0; i<platforms.length; i++)
         {
             platforms[i].position = platforms[i].startPosition;
         }
         scrollOffset = 0;
-        console.log('game over')
-        console.log(this.startPosition)
-        isDood = false;
-    }
+        //isDood = false;
 }
 
 // Controls
@@ -183,7 +184,13 @@ window.addEventListener('keydown', ({ keyCode }) => {
             break;
         case 87:
             console.log('up')
+            console.log(player.position.y);
+            if(player.position.y > 200){
             player.velocity.y -= 15
+        } else {
+            player.velocity.y = 0;
+        }
+            // player.position.y = (player.position.y - 15)
             break;
     }
 
