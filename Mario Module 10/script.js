@@ -1,6 +1,9 @@
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 let isDood = false;
+let winsound = document.getElementById('win');
+let jumpsound = document.getElementById('jump');
+let deathsound = document.getElementById('death');
 
 
 canvas.width = window.innerWidth
@@ -72,10 +75,19 @@ class Platform {
 const player = new Player( {x: 100, y:100} )
 const platforms = [new Platform({
     x: 0, y: 750,
-    width: 1500, height: 50
+    width: 1000, height: 50
 }), new Platform({
-     x: 1200, y: 450,
-     width: 1500, height: 50
+     x: 1400, y: 450,
+     width:300, height: 50
+}), new Platform({
+    x: 1900, y: 250,
+    width:300, height: 50
+}), new Platform({
+    x: 2600, y: 750,
+    width:700, height: 50
+}), new Platform({
+    x: 3800, y: 750,
+    width:800, height: 50
 })
 
 ]
@@ -136,6 +148,7 @@ function animate() {
     //win condition
     if (scrollOffset > 4000) {
         c.fillText('You Win!',700, 400)
+        winsound.play();
     }
 
     c.font = '30px Arial';
@@ -154,6 +167,7 @@ function animate() {
         if (player.position.y > canvas.height) {
             console.log('game over')
             gameOver()
+            deathsound.play();
         }
     }
 }
@@ -185,10 +199,9 @@ window.addEventListener('keydown', ({ keyCode }) => {
         case 87:
             console.log('up')
             console.log(player.position.y);
-            if(player.position.y > 200){
-            player.velocity.y -= 15
-        } else {
-            player.velocity.y = 0;
+            {
+            player.velocity.y -= 20
+            jumpsound.play();
         }
             // player.position.y = (player.position.y - 15)
             break;
